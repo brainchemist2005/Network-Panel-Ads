@@ -34,7 +34,7 @@ public:
     void addNode(const std::string& node);
     void addEdge(const std::string& name, const std::string& start, const std::string& end, int cost);
     const std::vector<std::string>& getNodes() const;
-     std::vector<Edge>& getEdges() ;
+    std::vector<Edge>& getEdges() ;
     int getNodeIndex(const std::string& node) const;
     friend std::istream& operator>>(std::istream& is, Carte& carte);
 };

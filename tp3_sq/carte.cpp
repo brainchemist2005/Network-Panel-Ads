@@ -29,7 +29,7 @@ const std::vector<std::string>& Carte::getNodes() const {
     return nodes;
 }
 
- std::vector<Edge>& Carte::getEdges()  {
+std::vector<Edge>& Carte::getEdges()  {
     return edges;
 }
 
@@ -44,22 +44,39 @@ int Carte::getNodeIndex(const std::string& node) const {
 std::istream& operator>>(std::istream& is, Carte& carte) {
     std::string line;
     bool readingNodes = true;
-    while(std::getline(is, line)) {
-        std::istringstream iss(line);
-        if(line == "---") {
+    int compteur = 0;
+
+    while (std::getline(is, line)) {
+        if (line == "---" && compteur == 0) {
+            // Basculer entre les modes de lecture
             readingNodes = false;
+            compteur ++;
+            std::cout << "Changement mode lecture" << std::endl;
+            std::cout << compteur  << std::endl;
             continue;
         }
-        if(readingNodes) {
+
+        if (readingNodes) {
+            // Ajouter le nœud à la carte
             carte.addNode(line);
+            std::cout << line  << std::endl;
         } else {
-            std::string name, colon, start, end, semicolon;
+            // Lire une arête à partir de la ligne
+            std::istringstream iss(line);
+            std::string name, start, end;
+            char colon;
             int cost;
-            if (getline(iss, name, ':') && iss >> start >> end >> cost && getline(iss, semicolon, ';')) {
+            char semicolon;
+
+            if (iss >> name >> colon >> start >> end >> cost >> semicolon) {
+                // Ajouter l'arête à la carte
                 carte.addEdge(name, start, end, cost);
+            } else {
+                std::cerr << "Erreur de lecture de l'arête: " << line << std::endl;
             }
         }
     }
+
     return is;
 }
 
