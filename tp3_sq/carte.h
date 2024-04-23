@@ -2,6 +2,7 @@
  *  UQAM / Département d'informatique / TP3
  *
  *  Vos noms + codes permanents : BOUARGAN Zakariae BOUZ90340206
+ *                                Bissonnette Vincent BISV28059906
  */
 
 #ifndef CARTE_H
