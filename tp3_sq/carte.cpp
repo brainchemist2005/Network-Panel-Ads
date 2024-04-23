@@ -47,19 +47,24 @@ std::istream& operator>>(std::istream& is, Carte& carte) {
     int compteur = 0;
 
     while (std::getline(is, line)) {
-        if (line == "---" && compteur == 0) {
+        // Supprimer les espaces avant et après la ligne
+        line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](unsigned char c) { return !std::isspace(c); }));
+        line.erase(std::find_if(line.rbegin(), line.rend(), [](unsigned char c) { return !std::isspace(c); }).base(), line.end());
+
+        if (line.empty()) {
+            continue; // Ignorer les lignes vides
+        }
+
+        if (line == "---") {
             // Basculer entre les modes de lecture
             readingNodes = false;
-            compteur ++;
-            std::cout << "Changement mode lecture" << std::endl;
-            std::cout << compteur  << std::endl;
+            compteur++;
             continue;
         }
 
         if (readingNodes) {
             // Ajouter le nœud à la carte
             carte.addNode(line);
-            std::cout << line  << std::endl;
         } else {
             // Lire une arête à partir de la ligne
             std::istringstream iss(line);

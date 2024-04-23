@@ -12,6 +12,7 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <algorithm>
 
 struct Edge {
     std::string name, start, end;
