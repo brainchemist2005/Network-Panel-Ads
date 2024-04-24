@@ -14,74 +14,67 @@
 
 Carte::Carte() {}
 
-void Carte::addNode(const std::string& node) {
-    if(nodeIndexMap.find(node) == nodeIndexMap.end()) {
-        nodeIndexMap[node] = nodes.size();
-        nodes.push_back(node);
+void Carte::addSommet(const std::string& sommet) {
+    if(sommetIndexMap.find(sommet) == sommetIndexMap.end()) {
+        sommetIndexMap[sommet] = sommets.size();
+        sommets.push_back(sommet);
     }
 }
 
-void Carte::addEdge(const std::string& name, const std::string& start, const std::string& end, int cost) {
-    edges.push_back({name, start, end, cost});
+void Carte::addArrete(const std::string& nom, const std::string& debut, const std::string& fin, int cout) {
+    arretes.push_back({nom, debut, fin, cout});
 }
 
-const std::vector<std::string>& Carte::getNodes() const {
-    return nodes;
+const std::vector<std::string>& Carte::getSommets() const {
+    return sommets;
 }
 
-std::vector<Edge>& Carte::getEdges()  {
-    return edges;
+std::vector<Arrete>& Carte::getArretes()  {
+    return arretes;
 }
 
-int Carte::getNodeIndex(const std::string& node) const {
-    auto it = nodeIndexMap.find(node);
-    if(it != nodeIndexMap.end()) {
+int Carte::getSommetIndex(const std::string& sommet) const {
+    auto it = sommetIndexMap.find(sommet);
+    if(it != sommetIndexMap.end()) {
         return it->second;
     }
     return -1;
 }
 
 std::istream& operator>>(std::istream& is, Carte& carte) {
-    std::string line;
-    bool readingNodes = true;
+    std::string ligne;
+    bool lireSommets = true;
     int compteur = 0;
 
-    while (std::getline(is, line)) {
-        // Supprimer les espaces avant et après la ligne
-        line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](unsigned char c) { return !std::isspace(c); }));
-        line.erase(std::find_if(line.rbegin(), line.rend(), [](unsigned char c) { return !std::isspace(c); }).base(), line.end());
+    while (std::getline(is, ligne)) {
+        ligne.erase(ligne.begin(), std::find_if(ligne.begin(), ligne.end(), [](unsigned char c) { return !std::isspace(c); }));
+        ligne.erase(std::find_if(ligne.rbegin(), ligne.rend(), [](unsigned char c) { return !std::isspace(c); }).base(), ligne.end());
 
-        if (line.empty()) {
-            continue; // Ignorer les lignes vides
+        if (ligne.empty()) {
         }
 
-        if (line == "---") {
-            // Basculer entre les modes de lecture
-            readingNodes = false;
+        if (ligne == "---") {
+            lireSommets = false;
             compteur++;
             continue;
         }
 
-        if (readingNodes) {
-            // Ajouter le nœud à la carte
-            carte.addNode(line);
+        if (lireSommets) {
+            carte.addSommet(ligne);
         } else {
-            // Lire une arête à partir de la ligne
-            std::istringstream iss(line);
-            std::string name, start, end;
-            char colon;
-            int cost;
-            char semicolon;
+            std::istringstream iss(ligne);
+            std::string nom, debut, fin;
+            char deuxPoints;
+            int cout;
+            char pointVirgule;
 
-            if (iss >> name >> colon >> start >> end >> cost >> semicolon) {
-                // Ajouter l'arête à la carte
-                carte.addEdge(name, start, end, cost);
+            if (iss >> nom >> deuxPoints >> debut >> fin >> cout >> pointVirgule) {
+                carte.addArrete(nom, debut, fin, cout);
             } else {
-                std::cerr << "Erreur de lecture de l'arête: " << line << std::endl;
+                std::cerr << "Erreur de lecture de l'arête: " << ligne << std::endl;
             }
         }
     }
-
     return is;
 }
 

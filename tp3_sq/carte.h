@@ -14,29 +14,29 @@
 #include <map>
 #include <algorithm>
 
-struct Edge {
-    std::string name, start, end;
-    int cost;
-    bool operator<(const Edge& other) const {
-        if(cost != other.cost) return cost < other.cost;
-        if(start != other.start) return start < other.start;
-        return end < other.end;
+struct Arrete {
+    std::string nom, debut, fin;
+    int cout;
+    bool operator<(const Arrete& other) const {
+        if(cout != other.cout) return cout < other.cout;
+        if(debut != other.debut) return debut < other.debut;
+        return fin < other.fin;
     }
 };
 
 class Carte {
 private:
-    std::vector<std::string> nodes;
-    std::vector<Edge> edges;
-    std::map<std::string, int> nodeIndexMap;
+    std::vector<std::string> sommets;
+    std::vector<Arrete> arretes;
+    std::map<std::string, int> sommetIndexMap;
 
 public:
     Carte();
-    void addNode(const std::string& node);
-    void addEdge(const std::string& name, const std::string& start, const std::string& end, int cost);
-    const std::vector<std::string>& getNodes() const;
-    std::vector<Edge>& getEdges() ;
-    int getNodeIndex(const std::string& node) const;
+    void addSommet(const std::string& sommet);
+    void addArrete(const std::string& nom, const std::string& debut, const std::string& fin, int cout);
+    const std::vector<std::string>& getSommets() const;
+    std::vector<Arrete>& getArretes() ;
+    int getSommetIndex(const std::string& sommet) const;
     friend std::istream& operator>>(std::istream& is, Carte& carte);
 };
 

@@ -14,9 +14,9 @@
 using namespace std;
 
 struct UnionFind {
-    vector<int> parent, rank;
+    vector<int> parent, rang;
 public:
-    UnionFind(int size) : parent(size), rank(size, 0) {
+    UnionFind(int size) : parent(size), rang(size, 0) {
         for(int i = 0; i < size; ++i) parent[i] = i;
     }
 
@@ -29,42 +29,42 @@ public:
         int rootX = find(x);
         int rootY = find(y);
         if(rootX != rootY) {
-            if(rank[rootX] > rank[rootY]) parent[rootY] = rootX;
-            else if(rank[rootX] < rank[rootY]) parent[rootX] = rootY;
+            if(rang[rootX] > rang[rootY]) parent[rootY] = rootX;
+            else if(rang[rootX] < rang[rootY]) parent[rootX] = rootY;
             else {
                 parent[rootY] = rootX;
-                rank[rootX]++;
+                rang[rootX]++;
             }
         }
     }
 };
 
 void tp3(Carte& carte){
-    vector<Edge>& edges = carte.getEdges();
-    const vector<string>& nodes = carte.getNodes();
-    int nodeCount = nodes.size();
-    UnionFind uf(nodeCount);
-    vector<Edge> mst;
-    int totalCost = 0;
-    std::sort(edges.begin(), edges.end());
+    vector<Arrete>& arretes = carte.getArretes();
+    const vector<string>& sommets = carte.getSommets();
+    int nbrSommet = sommets.size();
+    UnionFind uf(nbrSommet);
+    vector<Arrete> mst;
+    int coutTotal = 0;
+    std::sort(arretes.begin(), arretes.end());
 
 
-    for(auto& edge : edges){
-        int u = carte.getNodeIndex(edge.start);
-        int v = carte.getNodeIndex(edge.end);
+    for(auto& arrete : arretes){
+        int u = carte.getSommetIndex(arrete.debut);
+        int v = carte.getSommetIndex(arrete.fin);
         if(uf.find(u) != uf.find(v)){
             uf.unionSets(u, v);
-            mst.push_back(edge);
-            totalCost += edge.cost;
-            if (mst.size() == static_cast<size_t>(nodeCount - 1)) break;
+            mst.push_back(arrete);
+            coutTotal += arrete.cout;
+            if (mst.size() == static_cast<size_t>(nbrSommet - 1)) break;
         }
     }
 
-    for(const Edge& edge : mst){
-        cout << edge.name << "\t" << edge.start << "\t" << edge.end << "\t" << edge.cost << endl;
+    for(const Arrete& arrete : mst){
+        cout << arrete.nom << "\t" << arrete.debut << "\t" << arrete.fin << "\t" << arrete.cout << endl;
     }
     cout << "---" << endl;
-    cout << totalCost << endl;
+    cout << coutTotal << endl;
 }
 
 
@@ -83,8 +83,8 @@ int main(int argc, const char** argv)
     fichiercarte >> carte;
     fichiercarte.close();
 
-    for(const auto& node : carte.getNodes()) {
-        cout << node << endl;
+    for(const auto& sommet : carte.getSommets()) {
+        cout << sommet << endl;
     }
     tp3(carte);
     return 0;
