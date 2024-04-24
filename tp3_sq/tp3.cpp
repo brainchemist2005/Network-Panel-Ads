@@ -61,7 +61,7 @@ void tp3(Carte& carte){
     }
 
     for(const Arrete& arrete : mst){
-        cout << arrete.nom << "\t" << arrete.debut << "\t" << arrete.fin << "\t" << arrete.cout << endl;
+        cout << arrete.nom << " " << arrete.debut << " " << arrete.fin << " " << arrete.cout << endl;
     }
     cout << "---" << endl;
     cout << coutTotal << endl;
