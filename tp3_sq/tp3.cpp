@@ -40,20 +40,19 @@ public:
 };
 
 void tp3(Carte& carte){
-    const vector<Edge>& edges = carte.getEdges();
+    vector<Edge>& edges = carte.getEdges();
     const vector<string>& nodes = carte.getNodes();
     int nodeCount = nodes.size();
     UnionFind uf(nodeCount);
     vector<Edge> mst;
     int totalCost = 0;
+    std::sort(edges.begin(), edges.end());
 
 
     for(auto& edge : edges){
-        cout << "Considering edge: " << edge.name << " from " << edge.start << " to " << edge.end << " with cost " << edge.cost << endl;
         int u = carte.getNodeIndex(edge.start);
         int v = carte.getNodeIndex(edge.end);
         if(uf.find(u) != uf.find(v)){
-            cout << "Adding to MST: " << edge.name << " from " << edge.start << " to " << edge.end << " with cost " << edge.cost << endl;
             uf.unionSets(u, v);
             mst.push_back(edge);
             totalCost += edge.cost;
@@ -61,12 +60,11 @@ void tp3(Carte& carte){
         }
     }
 
-    cout << "Final MST:" << endl;
     for(const Edge& edge : mst){
         cout << edge.name << "\t" << edge.start << "\t" << edge.end << "\t" << edge.cost << endl;
     }
     cout << "---" << endl;
-    cout << "Total Cost of MST: " << totalCost << endl;
+    cout << totalCost << endl;
 }
 
 
@@ -85,15 +83,9 @@ int main(int argc, const char** argv)
     fichiercarte >> carte;
     fichiercarte.close();
 
-    cout << "Loaded Nodes:" << endl;
     for(const auto& node : carte.getNodes()) {
         cout << node << endl;
     }
-    cout << "Loaded Edges:" << endl;
-    for(const auto& edge : carte.getEdges()) {
-        cout << "Edge: " << edge.name << " from " << edge.start << " to " << edge.end << " costs " << edge.cost << endl;
-    }
-
     tp3(carte);
     return 0;
 }
